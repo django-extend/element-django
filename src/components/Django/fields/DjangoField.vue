@@ -69,7 +69,7 @@
       v-else-if="meta.input_type==='password'"
       show-password
       :value="value"
-      :max-ength="meta.max_length"
+      :max-length="meta.max_length"
       @input="handleChange"
     />
     <el-input v-else :value="value && value.toString()" :max-ength="meta.max_length" @input="handleChange" />

@@ -61,7 +61,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style scoped>
 .submit-tail {
   position: absolute;
   right: 0px;
@@ -73,11 +73,13 @@ export default {
   text-align: right;
   z-index: 1;
 }
+/* 默认的抽屉没有滚动条 */
 .el-drawer__body {
-  overflow: auto; //默认的抽屉没有滚动条
+  overflow: auto;
 }
+/* 不预留一点位置，下面的确定框会遮住最后一条记录 */
 .drawer-body {
   padding: 10px;
-  padding-bottom: 40px; //不预留一点位置，下面的确定框会遮住最后一条记录
+  padding-bottom: 40px;
 }
 </style>

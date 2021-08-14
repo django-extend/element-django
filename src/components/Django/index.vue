@@ -229,8 +229,8 @@ export default {
               break
           }
           this.$message[name](item.message)
-          this.refreshData()
         })
+        this.refreshData()
       })
     }
   }
