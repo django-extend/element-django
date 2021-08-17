@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import getters from './getters'
+import meta from '@/components/Django/models/meta'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,8 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
   const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')
   const value = modulesFiles(modulePath)
   modules[moduleName] = value.default
+  // django模型缓存
+  modules.meta = meta
   return modules
 }, {})
 

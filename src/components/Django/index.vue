@@ -141,17 +141,13 @@ export default {
         model: model
       }
     },
-    readMetaInfo() {
-      // todo 缓存
+    async readMetaInfo() {
       this.loading = true
-      const { app, model } = this.getModelInfo()
-      resource.options(app, model).then(res => {
-        this.metaInfo = res
-        res.filters.listFilter.forEach(filter => {
-          this.queryParam[filter.key] = ''
-        })
-        this.loading = false
+      this.metaInfo = await this.$store.dispatch('meta/getInfo', this.$route.name)
+      this.metaInfo.filters.listFilter.forEach(filter => {
+        this.queryParam[filter.key] = ''
       })
+      this.loading = false
     },
     getList(parameter) {
       const { app, model } = this.getModelInfo()
