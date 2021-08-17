@@ -34,6 +34,10 @@ export default {
       required: true
     },
     // 扩展
+    rowKey: {
+      type: String,
+      required: true
+    },
     pageSize: {
       type: Number,
       default: 10
