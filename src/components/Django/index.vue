@@ -63,7 +63,14 @@
         :key="column.dataIndex"
         :prop="column.dataIndex"
         :label="column.title"
-      />
+      >
+        <template slot-scope="{row}">
+          <django-value
+            :value="row[column.dataIndex]"
+            :meta="getMeta(column.dataIndex)"
+          />
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <template v-if="auth('change')">
@@ -94,10 +101,11 @@
 import * as resource from '@/components/Django/api/resource'
 import EditDialog from './form/EditDialog'
 import ViewDialog from './form/ViewDialog'
-import ElxTable from '@/components/Django/components/Table'
+import DjangoValue from './fields/DjangoValue'
+import ElxTable from './components/Table'
 
 export default {
-  components: { EditDialog, ViewDialog, ElxTable },
+  components: { EditDialog, ViewDialog, ElxTable, DjangoValue },
   data() {
     return {
       columns: [
@@ -123,11 +131,19 @@ export default {
   },
   methods: {
     auth(action) {
+      const permissions = this.$store.getters.roles.permissions
+      if (!permissions) {
+        // 退出登录，会清除store，导致页面异常
+        return
+      }
       const permissionId = this.$route.meta.permission
-      const actions = this.$store.getters.roles.permissions.find(item => {
+      const actions = permissions.find(item => {
         return item.permissionId === permissionId
       }).actionList
       return actions.indexOf(action) !== -1
+    },
+    getMeta(key) {
+      return this.metaInfo ? this.metaInfo.actions.POST[key] : null
     },
     formatPlaceholder(source) {
       return source.map(item => {
