@@ -33,12 +33,13 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+          // 动态菜单步骤1.从后端读取菜单列表
           const { menus } = await store.dispatch('user/getInfo')
 
           // generate accessible routes map based on roles
+          // 动态菜单步骤2.向vuex发起指令，通知生成菜单
           const accessRoutes = await store.dispatch('permission/generateRoutes', menus)
-          // dynamically add accessible routes
+          // 动态菜单步骤6.将动态路由写入
           router.addRoutes(accessRoutes)
 
           // hack method to ensure that addRoutes is complete

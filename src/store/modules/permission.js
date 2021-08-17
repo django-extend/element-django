@@ -45,6 +45,7 @@ const state = {
 }
 
 const mutations = {
+  // 动态菜单步骤5.将路由写入本地存储
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
@@ -60,6 +61,7 @@ const getComponent = (item) => {
   return item.component
 }
 
+// 动态菜单步骤4.动态生成菜单
 const generator = (routerMap, parent) => {
   return routerMap.map(item => {
     if (item.name === 'dashboard') {
@@ -90,6 +92,7 @@ const generator = (routerMap, parent) => {
 }
 
 const actions = {
+  // 动态菜单步骤3.收到指令，调用步骤4函数生成路由
   generateRoutes({ commit }, menus) {
     return new Promise(resolve => {
       // let accessedRoutes
