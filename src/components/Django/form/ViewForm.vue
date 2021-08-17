@@ -5,24 +5,19 @@
     :model="{}"
     label-width="100px"
   >
-    <div v-for="fieldset in fieldsets" :key="fieldset[0]">
-      <el-divider v-if="fieldset[0]" content-position="left">{{ fieldset[0] }}</el-divider>
-      <el-form-item
-        v-for="field in fieldset[1].fields"
-        :key="field.name"
-        :label="field.label"
-      >
-        <span>{{ field.value }}</span>
-      </el-form-item>
-    </div>
+    <el-descriptions v-for="fieldset in fieldsets" :key="fieldset[0]" :title="fieldset[0] " :column="1" border style="padding-top:10px">
+      <el-descriptions-item v-for="field in fieldset[1].fields" :key="field.name" :label="field.meta.label">
+        <django-value :value="field.value" :meta="field.meta" />
+      </el-descriptions-item>
+    </el-descriptions>
   </el-form>
 </template>
 <script>
-/*
-  todo: 有空把description实现一下，现在先用 form 顶一下
-*/
 import * as resource from '@/components/Django/api/resource'
+import DjangoValue from '@/components/Django/fields/DjangoValue'
+
 export default {
+  components: { DjangoValue },
   props: {
     sourceKey: {
       type: String,
@@ -62,8 +57,9 @@ export default {
         item[1].fields.forEach(name => {
           const meta = fieldInfos[name]
           fields.push({
-            label: meta.label,
-            name: name
+            meta: meta,
+            name: name,
+            value: null
           })
         })
         fieldsets.push([item[0], { fields: fields }])
@@ -74,9 +70,7 @@ export default {
       this.fieldsets.forEach(fieldset => {
         const fields = fieldset[1].fields
         fields.forEach(field => {
-          let value = values[field.name]
-          value = value instanceof Array ? value.join() : value
-          field.value = value
+          field.value = values[field.name]
         })
       })
     },
